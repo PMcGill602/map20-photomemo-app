@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "804672460497",
+    "firebase_url": "https://patrick-map2020-photomemo.firebaseio.com",
+    "project_id": "patrick-map2020-photomemo",
+    "storage_bucket": "patrick-map2020-photomemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804672460497:android:b9d9813e36fefec937d7f0",
+        "android_client_info": {
+          "package_name": "edu.uco.pmcgill.map2020.photomemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804672460497-h3m4cdcvuebmpm9l4rgo22fq54dtq57o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJcVBeyPCFVue1pLRgZFLj61jkCLR0mFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804672460497-h3m4cdcvuebmpm9l4rgo22fq54dtq57o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
