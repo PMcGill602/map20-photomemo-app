@@ -15,7 +15,7 @@ class DetailedScreen extends StatefulWidget {
 
 class _DetailedState extends State<DetailedScreen> {
   _Controller con;
-  FirebaseUser user;
+  User user;
   PhotoMemo photoMemo;
 
   @override

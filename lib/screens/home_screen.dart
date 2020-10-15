@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   _Controller con;
-  FirebaseUser user;
+  User user;
   List<PhotoMemo> photoMemos;
   var formKey = GlobalKey<FormState>();
 
@@ -70,7 +70,7 @@ class _HomeState extends State<HomeScreen> {
               UserAccountsDrawerHeader(
                 currentAccountPicture: ClipOval(
                   child: MyImageView.network(
-                      imageUrl: user.photoUrl, context: context),
+                      imageUrl: user.photoURL, context: context),
                 ),
                 accountEmail: Text(user.email),
                 accountName: Text(user.displayName ?? 'N/A'),
@@ -223,7 +223,7 @@ class _Controller {
     await Navigator.pushNamed(_state.context, SettingsScreen.routeName,
         arguments: _state.user);
     await _state.user.reload();
-    _state.user = await FirebaseAuth.instance.currentUser();
+    _state.user = FirebaseAuth.instance.currentUser;
     Navigator.pop(_state.context);
   }
 }

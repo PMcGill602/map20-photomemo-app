@@ -107,7 +107,7 @@ class _Controller {
 
     MyDialog.circularProgressStart(_state.context);
 
-    FirebaseUser user;
+    User user;
 
     try {
       user = await FireBaseController.signIn(email, password);

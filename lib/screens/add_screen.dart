@@ -20,7 +20,7 @@ class _AddState extends State<AddScreen> {
   _Controller con;
   File image;
   var formKey = GlobalKey<FormState>();
-  FirebaseUser user;
+  User user;
   List<PhotoMemo> photoMemos;
 
   @override

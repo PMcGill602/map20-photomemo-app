@@ -20,7 +20,7 @@ class EditScreen extends StatefulWidget {
 class _EditState extends State<EditScreen> {
   _Controller con;
   PhotoMemo photoMemo;
-  FirebaseUser user;
+  User user;
   var formKey = GlobalKey<FormState>();
   @override
   void initState() {

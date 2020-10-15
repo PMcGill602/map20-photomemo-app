@@ -18,7 +18,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsState extends State<SettingsScreen> {
   _Controller con;
   var formKey = GlobalKey<FormState>();
-  FirebaseUser user;
+  User user;
   @override
   void initState() {
     super.initState();
@@ -47,7 +47,7 @@ class _SettingsState extends State<SettingsScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: con.imageFile == null
                         ? MyImageView.network(
-                            imageUrl: user.photoUrl, context: context)
+                            imageUrl: user.photoURL, context: context)
                         : Image.file(con.imageFile, fit: BoxFit.fill),
                   ),
                   Positioned(

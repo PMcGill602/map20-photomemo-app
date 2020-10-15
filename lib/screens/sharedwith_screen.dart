@@ -78,6 +78,6 @@ class _SharedWithState extends State<SharedWithScreen> {
 }
 
 class _Controller {
-  _SharedWithState state;
-  _Controller(this.state);
+  _SharedWithState _state;
+  _Controller(this._state);
 }

@@ -9,7 +9,8 @@ import 'package:photomemo/model/photomemo.dart';
 
 class FireBaseController {
   static Future signIn(String email, String password) async {
-    AuthResult auth = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    UserCredential auth =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -21,15 +22,15 @@ class FireBaseController {
   }
 
   static Future<List<PhotoMemo>> getPhotoMemos(String email) async {
-    QuerySnapshot querySnapshot = await Firestore.instance
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
         .where(PhotoMemo.CREATED_BY, isEqualTo: email)
         .orderBy(PhotoMemo.UPDATED_AT, descending: true)
-        .getDocuments();
+        .get();
     var result = <PhotoMemo>[];
-    if (querySnapshot != null && querySnapshot.documents.length != 0) {
-      for (var doc in querySnapshot.documents) {
-        result.add(PhotoMemo.deserialize(doc.data, doc.documentID));
+    if (querySnapshot != null && querySnapshot.docs.length != 0) {
+      for (var doc in querySnapshot.docs) {
+        result.add(PhotoMemo.deserialize(doc.data(), doc.id));
       }
     }
     return result;
@@ -58,10 +59,10 @@ class FireBaseController {
 
   static Future<String> addPhotomemo(PhotoMemo photoMemo) async {
     photoMemo.updatedAt = DateTime.now();
-    DocumentReference ref = await Firestore.instance
+    DocumentReference ref = await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
         .add(photoMemo.serialize());
-    return ref.documentID;
+    return ref.id;
   }
 
   static Future<List<dynamic>> getImageLabels(File imageFile) async {
@@ -80,9 +81,9 @@ class FireBaseController {
   }
 
   static Future<void> deletePhotoMemo(PhotoMemo photoMemo) async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
-        .document(photoMemo.docId)
+        .doc(photoMemo.docId)
         .delete();
     await FirebaseStorage.instance.ref().child(photoMemo.photoPath).delete();
   }
@@ -91,16 +92,16 @@ class FireBaseController {
     @required String email,
     @required String imageLabel,
   }) async {
-    QuerySnapshot querySnapshot = await Firestore.instance
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
         .where(PhotoMemo.CREATED_BY, isEqualTo: email)
         .where(PhotoMemo.IMAGE_LABELS, arrayContains: imageLabel.toLowerCase())
         .orderBy(PhotoMemo.UPDATED_AT, descending: true)
-        .getDocuments();
+        .get();
     var result = <PhotoMemo>[];
-    if (querySnapshot != null && querySnapshot.documents.length != 0) {
-      for (var doc in querySnapshot.documents) {
-        result.add(PhotoMemo.deserialize(doc.data, doc.documentID));
+    if (querySnapshot != null && querySnapshot.docs.length != 0) {
+      for (var doc in querySnapshot.docs) {
+        result.add(PhotoMemo.deserialize(doc.data(), doc.id));
       }
     }
     return result;
@@ -108,22 +109,22 @@ class FireBaseController {
 
   static Future<void> updatePhotoMemo(PhotoMemo photoMemo) async {
     photoMemo.updatedAt = DateTime.now();
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
-        .document(photoMemo.docId)
-        .setData(photoMemo.serialize());
+        .doc(photoMemo.docId)
+        .set(photoMemo.serialize());
   }
 
   static Future<List<PhotoMemo>> getPhotoMemosSharedWithMe(String email) async {
-    QuerySnapshot querySnapshot = await Firestore.instance
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
         .where(PhotoMemo.SHARED_WITH, arrayContains: email)
         .orderBy(PhotoMemo.UPDATED_AT, descending: true)
-        .getDocuments();
+        .get();
     var result = <PhotoMemo>[];
-    if (querySnapshot != null && querySnapshot.documents.length != 0) {
-      for (var doc in querySnapshot.documents) {
-        result.add(PhotoMemo.deserialize(doc.data, doc.documentID));
+    if (querySnapshot != null && querySnapshot.docs.length != 0) {
+      for (var doc in querySnapshot.docs) {
+        result.add(PhotoMemo.deserialize(doc.data(), doc.id));
       }
     }
     return result;
@@ -137,11 +138,9 @@ class FireBaseController {
   static Future<void> updateProfile({
     @required File image,
     @required String displayName,
-    @required FirebaseUser user,
+    @required User user,
     @required Function progressListener,
   }) async {
-    UserUpdateInfo updateInfo = UserUpdateInfo();
-    updateInfo.displayName = displayName;
     if (image != null) {
       String filePath = '${PhotoMemo.PROFILE_FOLDER}/${user.uid}/${user.uid}';
       StorageUploadTask uploadTask =
@@ -154,8 +153,14 @@ class FireBaseController {
       });
       var download = await uploadTask.onComplete;
       String url = await download.ref.getDownloadURL();
-      updateInfo.photoUrl = url;
+      await FirebaseAuth.instance.currentUser.updateProfile(
+        displayName: displayName,
+        photoURL: url,
+      );
+    } else {
+      await FirebaseAuth.instance.currentUser.updateProfile(
+        displayName: displayName,
+      );
     }
-    await user.updateProfile(updateInfo);
   }
 }
