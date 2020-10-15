@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photomemo/controller/firebasecontroller.dart';
 import 'package:photomemo/model/photomemo.dart';
 import 'package:photomemo/screens/home_screen.dart';
+import 'package:photomemo/screens/signup_screen.dart';
 import 'package:photomemo/screens/views/mydialog.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -76,6 +77,15 @@ class _SignInState extends State<SignInScreen> {
               color: Colors.blue,
               onPressed: con.signIn,
             ),
+            SizedBox(
+              height: 30.0,
+            ),
+            FlatButton(
+                onPressed: con.signUp,
+                child: Text(
+                  'No account yet? Click here to create',
+                  style: TextStyle(fontSize: 15.0),
+                ))
           ]),
         ),
       ),
@@ -123,7 +133,8 @@ class _Controller {
       MyDialog.info(
         context: _state.context,
         title: 'Firebase/Firestore error',
-        content: 'Cannot get photo memo documents. Try again later!\n ${e.message}',
+        content:
+            'Cannot get photo memo documents. Try again later!\n ${e.message}',
       );
     }
   }
@@ -150,5 +161,9 @@ class _Controller {
 
   void onSavedPassword(String value) {
     password = value;
+  }
+
+  void signUp() async{
+    Navigator.pushNamed(_state.context, SignUpScreen.routeName);
   }
 }
