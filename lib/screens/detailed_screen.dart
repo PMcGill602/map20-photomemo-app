@@ -36,6 +36,7 @@ class _DetailedState extends State<DetailedScreen> {
       appBar: AppBar(
         title: Text('Detailed view'),
         actions: <Widget>[
+          IconButton(icon: Icon(Icons.cloud_upload), onPressed: con.upload),
           IconButton(icon: Icon(Icons.edit), onPressed: con.edit),
         ],
       ),
@@ -96,5 +97,14 @@ class _Controller {
     await Navigator.pushNamed(_state.context, EditScreen.routeName,
         arguments: {'user': _state.user, 'photoMemo': _state.photoMemo});
     _state.render((){});
+  }
+
+  void upload() async {
+    MyDialog.prompt(
+      context: _state.context,
+      title: 'Upload Photomemo?',
+      content: 'Are you sure you want to make this Photomemo public?',
+      photoMemo: _state.photoMemo,
+    );
   }
 }

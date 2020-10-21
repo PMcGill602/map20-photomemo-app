@@ -163,4 +163,29 @@ class FireBaseController {
       );
     }
   }
+
+  static Future<void> makePhotoMemoPublic(PhotoMemo photoMemo) async {
+    print(photoMemo.toString());
+    photoMemo.public = true;
+    photoMemo.score = 1;
+    await FirebaseFirestore.instance
+        .collection(PhotoMemo.COLLECTION)
+        .doc(photoMemo.docId)
+        .update(photoMemo.serialize());
+  }
+
+  static Future<List<PhotoMemo>> getPublicPhotoMemos() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(PhotoMemo.COLLECTION)
+        .where(PhotoMemo.PUBLIC, isEqualTo: true)
+        .orderBy(PhotoMemo.UPDATED_AT, descending: true)
+        .get();
+    var result = <PhotoMemo>[];
+    if (querySnapshot != null && querySnapshot.docs.length != 0) {
+      for (var doc in querySnapshot.docs) {
+        result.add(PhotoMemo.deserialize(doc.data(), doc.id));
+      }
+    }
+    return result;
+  }
 }

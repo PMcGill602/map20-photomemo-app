@@ -177,6 +177,8 @@ class _Controller {
         createdBy: _state.user.email,
         sharedWith: sharedWith,
         updatedAt: DateTime.now(),
+        public: false,
+        score: null,
         imageLabels: labels,
       );
 

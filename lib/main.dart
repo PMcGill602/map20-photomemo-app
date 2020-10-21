@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photomemo/screens/add_screen.dart';
+import 'package:photomemo/screens/browse_screen.dart';
 import 'package:photomemo/screens/detailed_screen.dart';
 import 'package:photomemo/screens/edit_screen.dart';
 import 'package:photomemo/screens/home_screen.dart';
@@ -30,6 +31,7 @@ class PhotoMemoApp extends StatelessWidget {
         SharedWithScreen.routeName: (context) => SharedWithScreen(),
         SignUpScreen.routeName: (context) => SignUpScreen(),
         SettingsScreen.routeName: (context) => SettingsScreen(),
+        BrowseScreen.routeName: (context) => BrowseScreen(),
       },
     );
   }

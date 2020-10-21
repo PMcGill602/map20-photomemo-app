@@ -9,6 +9,8 @@ class PhotoMemo {
   static const PHOTO_URL = 'photoURL';
   static const PHOTO_PATH = 'photoPath';
   static const UPDATED_AT = 'updatedAt';
+  static const PUBLIC = 'public';
+  static const SCORE = 'score';
   static const SHARED_WITH = 'sharedWith';
   static const IMAGE_LABELS = 'imageLabels';
   static const MIN_CONFIDENCE = 0.7;
@@ -20,8 +22,11 @@ class PhotoMemo {
   String photoPath;
   String photoURL;
   DateTime updatedAt;
+  bool public;
+  int score;
   List<dynamic> sharedWith;
   List<dynamic> imageLabels;
+  
 
   PhotoMemo({
     this.docId,
@@ -31,6 +36,8 @@ class PhotoMemo {
     this.photoPath,
     this.photoURL,
     this.updatedAt,
+    this.public,
+    this.score,
     this.sharedWith,
     this.imageLabels,
   }) {
@@ -46,6 +53,8 @@ class PhotoMemo {
       PHOTO_PATH: photoPath,
       PHOTO_URL: photoURL,
       UPDATED_AT: updatedAt,
+      PUBLIC: public,
+      SCORE: score,
       SHARED_WITH: sharedWith,
       IMAGE_LABELS: imageLabels,
     };
@@ -61,6 +70,8 @@ class PhotoMemo {
       photoURL: data[PhotoMemo.PHOTO_URL],
       updatedAt: data[PhotoMemo.UPDATED_AT] != null ?
         DateTime.fromMillisecondsSinceEpoch(data[PhotoMemo.UPDATED_AT].millisecondsSinceEpoch) : null,
+      public: data[PhotoMemo.PUBLIC],
+      score: data[PhotoMemo.SCORE],
       sharedWith: data[PhotoMemo.SHARED_WITH],
       imageLabels: data[PhotoMemo.IMAGE_LABELS],
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photomemo/controller/firebasecontroller.dart';
 import 'package:photomemo/model/photomemo.dart';
 import 'package:photomemo/screens/add_screen.dart';
+import 'package:photomemo/screens/browse_screen.dart';
 import 'package:photomemo/screens/detailed_screen.dart';
 import 'package:photomemo/screens/settings_screen.dart';
 import 'package:photomemo/screens/sharedwith_screen.dart';
@@ -45,7 +46,15 @@ class _HomeState extends State<HomeScreen> {
           title: Text('Home'),
           actions: <Widget>[
             Container(
-              width: 180.0,
+                width: 90.0,
+                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                child: RaisedButton(
+                  onPressed: con.browse,
+                  child: Text("Browse"),
+                  color: Colors.blue[200],
+                )),
+            Container(
+              width: 130.0,
               child: Form(
                 key: formKey,
                 child: TextFormField(
@@ -225,5 +234,21 @@ class _Controller {
     await _state.user.reload();
     _state.user = FirebaseAuth.instance.currentUser;
     Navigator.pop(_state.context);
+  }
+
+  void browse() async {
+    MyDialog.circularProgressStart(_state.context);
+    try {
+      List<PhotoMemo> photoMemos = await FireBaseController.getPublicPhotoMemos();
+      MyDialog.circularProgressEnd(_state.context);
+      Navigator.pushNamed(_state.context, BrowseScreen.routeName, arguments: {'photoMemoList': photoMemos});
+    } catch (e) {
+      MyDialog.circularProgressEnd(_state.context);
+      MyDialog.info(
+        context: _state.context,
+        title: 'Browse error',
+        content: e.message ?? e.toString(),
+      );
+    }
   }
 }
