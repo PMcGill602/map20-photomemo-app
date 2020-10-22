@@ -241,7 +241,7 @@ class _Controller {
     try {
       List<PhotoMemo> photoMemos = await FireBaseController.getPublicPhotoMemos();
       MyDialog.circularProgressEnd(_state.context);
-      Navigator.pushNamed(_state.context, BrowseScreen.routeName, arguments: {'photoMemoList': photoMemos});
+      Navigator.pushNamed(_state.context, BrowseScreen.routeName, arguments: {'user': _state.user, 'photoMemoList': photoMemos});
     } catch (e) {
       MyDialog.circularProgressEnd(_state.context);
       MyDialog.info(

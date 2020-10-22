@@ -10,9 +10,9 @@ class PhotoMemo {
   static const PHOTO_PATH = 'photoPath';
   static const UPDATED_AT = 'updatedAt';
   static const PUBLIC = 'public';
-  static const SCORE = 'score';
   static const SHARED_WITH = 'sharedWith';
   static const IMAGE_LABELS = 'imageLabels';
+  static const VOTES = 'votes';
   static const MIN_CONFIDENCE = 0.7;
 
   String docId;
@@ -23,9 +23,9 @@ class PhotoMemo {
   String photoURL;
   DateTime updatedAt;
   bool public;
-  int score;
   List<dynamic> sharedWith;
   List<dynamic> imageLabels;
+  Map<String, dynamic> votes;
   
 
   PhotoMemo({
@@ -37,12 +37,13 @@ class PhotoMemo {
     this.photoURL,
     this.updatedAt,
     this.public,
-    this.score,
     this.sharedWith,
     this.imageLabels,
+    this.votes,
   }) {
     this.sharedWith ??= [];
     this.imageLabels ??= [];
+    this.votes ??= {};
   }
 
   Map<String, dynamic> serialize() {
@@ -54,9 +55,9 @@ class PhotoMemo {
       PHOTO_URL: photoURL,
       UPDATED_AT: updatedAt,
       PUBLIC: public,
-      SCORE: score,
       SHARED_WITH: sharedWith,
       IMAGE_LABELS: imageLabels,
+      VOTES: votes,
     };
   }
 
@@ -71,9 +72,9 @@ class PhotoMemo {
       updatedAt: data[PhotoMemo.UPDATED_AT] != null ?
         DateTime.fromMillisecondsSinceEpoch(data[PhotoMemo.UPDATED_AT].millisecondsSinceEpoch) : null,
       public: data[PhotoMemo.PUBLIC],
-      score: data[PhotoMemo.SCORE],
       sharedWith: data[PhotoMemo.SHARED_WITH],
       imageLabels: data[PhotoMemo.IMAGE_LABELS],
+      votes: data[PhotoMemo.VOTES],
     );
   }
 

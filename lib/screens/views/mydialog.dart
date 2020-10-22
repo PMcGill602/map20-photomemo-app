@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:photomemo/controller/firebasecontroller.dart';
 import 'package:photomemo/model/photomemo.dart';
 
 class MyDialog {
@@ -38,7 +37,9 @@ class MyDialog {
       {BuildContext context,
       String title,
       String content,
-      PhotoMemo photoMemo}) {
+      PhotoMemo photoMemo,
+      String uid,
+      Function fn,}) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -49,10 +50,7 @@ class MyDialog {
           actions: <Widget>[
             FlatButton(
               child: Text('Confirm'),
-              onPressed: () {
-                FireBaseController.makePhotoMemoPublic(photoMemo);
-                Navigator.of(context).pop();
-              },
+              onPressed: fn,
             ),
             FlatButton(
               child: Text('Cancel'),

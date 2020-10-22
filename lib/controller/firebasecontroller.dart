@@ -164,10 +164,11 @@ class FireBaseController {
     }
   }
 
-  static Future<void> makePhotoMemoPublic(PhotoMemo photoMemo) async {
-    print(photoMemo.toString());
+  static Future<void> makePhotoMemoPublic(
+      {@required PhotoMemo photoMemo, @required String uid}) async {
     photoMemo.public = true;
-    photoMemo.score = 1;
+    Map<String, int> map = {'$uid': 1};
+    photoMemo.votes.addEntries(map.entries);
     await FirebaseFirestore.instance
         .collection(PhotoMemo.COLLECTION)
         .doc(photoMemo.docId)
@@ -187,5 +188,25 @@ class FireBaseController {
       }
     }
     return result;
+  }
+
+  static Future<void> upvotePhotoMemo(
+      {@required PhotoMemo photoMemo, @required String uid}) async {
+    Map<String, int> map = {'$uid': 1};
+    photoMemo.votes.addEntries(map.entries);
+    await FirebaseFirestore.instance
+        .collection(PhotoMemo.COLLECTION)
+        .doc(photoMemo.docId)
+        .update(photoMemo.serialize());
+  }
+
+  static Future<void> downvotePhotoMemo(
+      {@required PhotoMemo photoMemo, @required String uid}) async {
+    Map<String, int> map = {'$uid': -1};
+    photoMemo.votes.addEntries(map.entries);
+    await FirebaseFirestore.instance
+        .collection(PhotoMemo.COLLECTION)
+        .doc(photoMemo.docId)
+        .update(photoMemo.serialize());
   }
 }

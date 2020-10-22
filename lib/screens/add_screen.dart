@@ -178,7 +178,6 @@ class _Controller {
         sharedWith: sharedWith,
         updatedAt: DateTime.now(),
         public: false,
-        score: null,
         imageLabels: labels,
       );
 
